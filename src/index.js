@@ -48,15 +48,14 @@ const shipFactory = (name, size) => {
     }
 }
 
-const gameBoard = (name, length) => {
-    let boardName = name;
+const gameBoard = (type, length) => {
 
     let createBoard = () => {
         let board = [];
         for (let i = 0; i < length; i++) {
             let row = [];
             for (let j = 0; j < length; j++) {
-                row.push(0);
+                row.push('');
             }
             board.push(row);
         }
@@ -65,33 +64,47 @@ const gameBoard = (name, length) => {
 
     let board = createBoard(length);
 
-    // 0 For empty square;
-    // 1 for missed square;
-    // 2 for hit
-    // Ca for carrier;
-    // Ba for battleship;
-    // Cr for cruiser;
-    // De for destroyer;
-    // S for submarine;
+    // board will consist of following markers: 
+    // '' For empty square; // M for missed square;
+    // X for hit // index of gamePieces array for ship
+    
+    let gamePieces = [];
 
-    let placeShips = (ship, coordOne, coordTwo) => {
+    let storeShip = (ship) => {
+        let newShip = shipFactory(ship.name, ship.size)
+        gamePieces.push(newShip);
+    }
 
-        let horizontal = false;
-        if (coordOne[0] == coordTwo[0]) horizontal = true;
-
+    let placeShip = (ship, coord, horizontal=true) => {
+          // check ship is being places within boundary of board
+        if (horizontal && coord[1] + ship.size > length-1) return new Error('Please place ship within board');
+        if (!horizontal && coord[0] + ship.size > length-1) return new Error('Please place ship within board');
+        
         if (horizontal) {
-           for (let i=coordOne[0]; i<coordTwo[0] + ship.size; i++) {
-            console.log(coordOne[0])
-            board[coordOne[0]][coordOne[1]] = 1;
-            coordOne[0]++
-           }
-           console.log(board)
-
+              // loop to check if overlapping ships
+            for (let i = coord[1]; i < coord[1] + ship.size; i++) {
+                if (board[coord[0]][i] !== '') return new Error('Cannot overlap ships')
+            }
+            for (let i = coord[1]; i < coord[1] + ship.size; i++) {
+                board[coord[0]][i] = gamePieces.length;
+            }
+            // else follow same directions but vertically;
         } else {
-            
+            for (let i = coord[0]; i < coord[0] + ship.size; i++) {
+                if (board[i][coord[1]] !== '') return new Error ('Cannot overlap ships')
+            }
+            for (let i = coord[0]; i < coord[0] + ship.size; i++) {
+                board[i][coord[1]] = gamePieces.length;
+            }
         }
+          // store ship in game pieces array
+        storeShip(ship);
+    }
+
+    let receiveAttack = () => {
 
     }
+
 
     return { 
         get board() {
@@ -100,7 +113,8 @@ const gameBoard = (name, length) => {
         get name() {
             return boardName;
         },
-        placeShips
+        gamePieces,
+        placeShip
     }
 }
 
