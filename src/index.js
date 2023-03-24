@@ -101,8 +101,23 @@ const gameBoard = (type, length) => {
         storeShip(ship);
     }
 
-    let receiveAttack = () => {
+    let receiveAttack = (coord) => {
+        let cell = board[coord[0]][coord[1]];
+          // check board at argument coord and return corresponding value;
+        if (cell === '') return 'M';  // M for miss
+        if (cell !== '') {
+            gamePieces[cell].hit();
+            board[coord[0]][coord[1]] = 'X';
+            return 'X'  // X for hit
+        }
+    }
 
+      // check if all ships have been sunk;
+    let allShipsSunk = () => {
+        for (let piece of gamePieces) {
+            if (piece.isSunk === false) return false;
+        }
+        return true;
     }
 
 
@@ -114,7 +129,9 @@ const gameBoard = (type, length) => {
             return boardName;
         },
         gamePieces,
-        placeShip
+        placeShip,
+        receiveAttack,
+        allShipsSunk,
     }
 }
 

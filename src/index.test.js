@@ -88,12 +88,32 @@ test('stores game pieces', () => {
     expect(pOneOcean.gamePieces[1].shipName).toBe('Cruiser')
 })
 
-test('receives attack', () => {
+test('receives attack and registers hit in game pieces', () => {
     let pOneOcean = index.gameBoard('ocean', 8);
     pOneOcean.placeShip(index.ships.carrier, [0, 0])
-    pOneOcean.gamePieces[0].hit();
-    expect(pOneOcean.gamePieces[0].hits).toBe(1);
+    pOneOcean.receiveAttack([0, 0]);
+    expect(pOneOcean.board).toEqual([
+        ['X',  0,  0,  0,  0, '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '']
+    ])
+    // registered hit in game pieces
+    expect(pOneOcean.gamePieces[0].hits).toBe(1)
 
+})
+
+test('allShipsSunk method is working correctly', () => {
+    let pOneOcean = index.gameBoard('ocean', 5);
+    pOneOcean.placeShip(index.ships.destroyer, [0, 0]);
+    pOneOcean.receiveAttack([0, 0]);
+    expect(pOneOcean.allShipsSunk()).toBe(false);
+    pOneOcean.receiveAttack([0, 1]);
+    expect(pOneOcean.allShipsSunk()).toBe(true)
 })
 
 
