@@ -109,12 +109,31 @@ test('receives attack and registers hit in game pieces', () => {
 
 test('allShipsSunk method is working correctly', () => {
     let pOneOcean = index.gameBoard('ocean', 5);
+
     pOneOcean.placeShip(index.ships.destroyer, [0, 0]);
+
     pOneOcean.receiveAttack([0, 0]);
     expect(pOneOcean.allShipsSunk()).toBe(false);
     pOneOcean.receiveAttack([0, 1]);
     expect(pOneOcean.allShipsSunk()).toBe(true)
+
+    pOneOcean.placeShip(index.ships.submarine, [1, 0], false);
+    expect(pOneOcean.allShipsSunk()).toBe(false)
+});
+
+// test Player;
+
+test.only('computer can return random "legal move" coordinate', () => {
+    let pOneOcean = index.gameBoard('ocean', 10);
+    let comp = index.Player('computer', true);
+    let attack = comp.attack(pOneOcean.board);
+    expect(typeof attack).toBe('object');
+    expect(attack.length).toBe(2);
+      // both x and y coords are within board
+    expect(attack[0] < 10 && attack[1] < 10 && attack[0] >= 0 && attack[1] >= 0).toBe(true);
+    
 })
+
 
 
 

@@ -48,7 +48,7 @@ const shipFactory = (name, size) => {
     }
 }
 
-const gameBoard = (type, length) => {
+const gameBoard = (type, length=10) => {
 
     let createBoard = () => {
         let board = [];
@@ -135,9 +135,104 @@ const gameBoard = (type, length) => {
     }
 }
 
+const Player = (name, computer=false) => {
+    
+    let hit = false;
+
+      // 0 - num random number generator
+    let rng = (num) => {
+        return Math.floor(Math.random() * num)
+    }
+      // use rng to create random coords
+    let randomCoords = () => {
+        return [rng(10), rng(10)]
+    }
+
+    let isValid = (coord) => {
+        if (board[coord[0]][coord[1]] !== 'M'
+            && board[coord[0]][coord[1]] !== 'X'
+            && coord[0] < 10
+            && coord[1] < 10
+            && coord[0] >= 0
+            && coord[1] >= 0) return true;
+        return false;
+    }
+
+
+    let attack = (board, coord) => {
+          // hit flag used to determine if smart move should be made;
+        let hit = false; 
+
+        if (!computer) {
+            // logic for player attack;
+            return;
+        } 
+
+
+          // store array of 'smart' moves if computer gets a hit
+        let smartMoves = [];
+        
+
+        // on a hit, push all adjacent unplayed coordinates into smartMoves Arr;
+        let storeSmartMoves = (hitCoord) => {
+            let moves = [];
+            let y = hitCoord[0];
+            let x = hitCoord[1];
+            moves.push([y++, x++]);
+            moves.push([y++, x--]);
+            moves.push([y--, x++]);
+            moves.push([y--, x--]);
+            moves.forEach(move => {
+                if (isValid(move)) {
+                    smartMoves.push(move);
+                }
+            })
+        }
+
+          // computer AI logic;
+        if (computer) {
+            
+
+            //   // if smart moves exist, use them, if not, get random coordinate
+            // if (smartMoves.length > 0) {
+            //     let randomSmartMove = Math.floor(Math.random() * smartMoves.length);
+            //     let smartMove = smartMoves.splice(randomSmartMove, 1);
+                
+            //     return smartMove;
+                
+
+                
+            // } else {
+                // store a random move in x;
+                let x = randomCoords();
+
+                // if 'random' move has already been made, create another pair of randoms coords
+                while(board[x[0]][x[1]] === 'X' || board[x[0]][x[1]] === 'M') {
+                    x = randomCoords();
+                }
+
+                return x;
+                
+            //     // if the move is a hit store smart moves;
+            //     if (board[x[0]][x[1]] !== '') {
+            //         hit = true;
+            //         storeSmartMoves(x);
+            //     }
+            // }
+        } 
+    }
+
+    return {
+        name, 
+        attack,
+
+    }
+}
+
 
 module.exports = {
     ships,
     shipFactory,
     gameBoard,
+    Player
 }
