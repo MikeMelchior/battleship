@@ -123,7 +123,7 @@ test('allShipsSunk method is working correctly', () => {
 
 // test Player;
 
-test.only('computer can return random "legal move" coordinate', () => {
+test('computer can return random "legal move" coordinate', () => {
     let pOneOcean = index.gameBoard('ocean', 10);
     let comp = index.Player('computer', true);
     let attack = comp.attack(pOneOcean.board);
@@ -133,6 +133,7 @@ test.only('computer can return random "legal move" coordinate', () => {
     expect(attack[0] < 10 && attack[1] < 10 && attack[0] >= 0 && attack[1] >= 0).toBe(true);
     
 })
+
 
 
 

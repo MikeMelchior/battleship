@@ -6,6 +6,8 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './src/index.js',
+        dom: './src/dom-stuff.js',
+        game: './src/game-loop.js',
     },
     devServer: {
         static: './dist',

@@ -48,7 +48,7 @@ const shipFactory = (name, size) => {
     }
 }
 
-const gameBoard = (type, length=10) => {
+const gameBoard = (length=10) => {
 
     let createBoard = () => {
         let board = [];
@@ -136,18 +136,16 @@ const gameBoard = (type, length=10) => {
 }
 
 const Player = (name, computer=false) => {
-    
-    let hit = false;
 
-      // 0 - num random number generator
-    let rng = (num) => {
-        return Math.floor(Math.random() * num)
+      // 0 - n random number generator
+    let rng = (n) => {
+        return Math.floor(Math.random() * n)
     }
       // use rng to create random coords
     let randomCoords = () => {
         return [rng(10), rng(10)]
     }
-
+      // function to check move is valid
     let isValid = (coord) => {
         if (board[coord[0]][coord[1]] !== 'M'
             && board[coord[0]][coord[1]] !== 'X'
@@ -165,7 +163,8 @@ const Player = (name, computer=false) => {
 
         if (!computer) {
             // logic for player attack;
-            return;
+            let coord = prompt('Enter a attack coordinate');
+            return coord;
         } 
 
 
