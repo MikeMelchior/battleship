@@ -1,4 +1,5 @@
-const index = require('./index')
+const index = require('./index');
+import * as domStuff from './dom-stuff'
 
 
 const newGame = () => {
@@ -23,7 +24,7 @@ const newGame = () => {
     
 
 
-    let gameHasWinner = false;
+    let gameHasWinner = true;
     let playerOneTurn = true;
 
 
@@ -63,12 +64,30 @@ const newGame = () => {
 
     
     
-    console.log (
-        playerBoard,
-        computerBoard
-    )
+
+    return {
+        get playerBoard() {
+            return playerBoard
+        },
+        get computerBoard() {
+            return computerBoard
+        }
+    }
 
 }
 
 
-newGame();
+
+async function game() {
+    let gameOne = newGame();
+    await domStuff;
+    domStuff.createGameBoard(gameOne.computerBoard.board)
+
+}
+
+game()
+
+
+export {
+    newGame
+}

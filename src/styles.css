@@ -1,0 +1,60 @@
+:root {
+    --oxfordBlue: #000022;
+    --pennBlue: #001242;
+    --blue: #0094C6;
+    --robinEggBlue: #66CED6;
+    --lapisLazuli: #005E7C;
+    --richBlack: #040F16;
+    --munsellBlue: #55828B;
+    --darkSlateGray: #3B6064;
+    --charcoal: #364958;
+    --papayaWhip: #FDF0D5; 
+    --engineeringOrange: #BF0603;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body,
+head {
+    height: 100vh;
+}
+
+body {
+    display: flex;
+}
+
+.main {
+    background-color: var(--oxfordBlue);
+    flex: auto;
+    
+    min-height: fit-content;
+    display: flex;
+} 
+
+.game-area {
+    display: grid;
+    grid: 1fr / 1fr 1fr;
+    width: 60%;
+    height: 100%;
+    margin: auto;
+}
+
+.game-board {
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    background-color: var(--blue);
+}
+
+.row {
+    display: flex;
+}
+
+.row > div {
+    height: 4vh;
+    width: 4vh;
+    border: 1px solid;
+}
