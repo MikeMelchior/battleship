@@ -96,9 +96,34 @@ const gameBoard = (length=10) => {
             for (let i = coord[0]; i < coord[0] + ship.size; i++) {
                 board[i][coord[1]] = gamePieces.length;
             }
+
         }
           // store ship in game pieces array
         storeShip(ship);
+        return true;
+    }
+
+    let randomlyPlaceShips = () => {
+        for (let ship in ships) {
+            placed = false;
+            let x = getRandomCoords();
+            let y = coinFlip();
+            while (!placed)
+              // if ship get placed, exit while loop;
+            if (placeShip(ships[ship], x, y) == true) {
+                placeShip(ships[ship], x, y);
+                placed = true;
+              // else get new coordinates and boolean and try again;
+            } else {
+                x = getRandomCoords();
+                y = coinFlip();
+            }
+        }
+    }
+
+    let coinFlip = () => {
+        if (Math.random() > 0.5) return true;
+        return false;
     }
 
     let receiveAttack = (coord) => {
@@ -120,33 +145,8 @@ const gameBoard = (length=10) => {
         return true;
     }
 
-
-    return { 
-        get board() {
-            return board;
-        },
-        get name() {
-            return boardName;
-        },
-        gamePieces,
-        placeShip,
-        receiveAttack,
-        allShipsSunk,
-    }
-}
-
-const Player = (name, computer=false) => {
-
-      // 0 - n random number generator
-    let rng = (n) => {
-        return Math.floor(Math.random() * n)
-    }
-      // use rng to create random coords
-    let randomCoords = () => {
-        return [rng(10), rng(10)]
-    }
       // function to check move is valid
-    let isValid = (coord) => {
+    let isMoveValid = (coord) => {
         if (board[coord[0]][coord[1]] !== 'M'
             && board[coord[0]][coord[1]] !== 'X'
             && coord[0] < 10
@@ -157,36 +157,63 @@ const Player = (name, computer=false) => {
     }
 
 
-    let attack = (board, coord) => {
+
+    
+
+      // 0 - n random number generator
+    let rng = (n) => {
+        return Math.floor(Math.random() * n)
+    }
+      // use rng to create random coords
+    let getRandomCoords = () => {
+        return [rng(10), rng(10)]
+    }
+
+    return { 
+        get board() {
+            return board;
+        },
+        gamePieces,
+        placeShip,
+        receiveAttack,
+        allShipsSunk,
+        isMoveValid,
+        getRandomCoords,
+        randomlyPlaceShips
+    }
+}
+
+
+
+const Player = (name, computer=false) => {
+
+    async function attack (board, coord) {
           // hit flag used to determine if smart move should be made;
         let hit = false; 
 
         if (!computer) {
             // logic for player attack;
-            let coord = prompt('Enter a attack coordinate');
-            return coord;
+            return coord 
         } 
 
-
-          // store array of 'smart' moves if computer gets a hit
-        let smartMoves = [];
+        //   // store array of 'smart' moves if computer gets a hit
+        // let smartMoves = [];
         
-
-        // on a hit, push all adjacent unplayed coordinates into smartMoves Arr;
-        let storeSmartMoves = (hitCoord) => {
-            let moves = [];
-            let y = hitCoord[0];
-            let x = hitCoord[1];
-            moves.push([y++, x++]);
-            moves.push([y++, x--]);
-            moves.push([y--, x++]);
-            moves.push([y--, x--]);
-            moves.forEach(move => {
-                if (isValid(move)) {
-                    smartMoves.push(move);
-                }
-            })
-        }
+        // // on a hit, push all adjacent unplayed coordinates into smartMoves Arr;
+        // let storeSmartMoves = (hitCoord) => {
+        //     let moves = [];
+        //     let y = hitCoord[0];
+        //     let x = hitCoord[1];
+        //     moves.push([y++, x++]);
+        //     moves.push([y++, x--]);
+        //     moves.push([y--, x++]);
+        //     moves.push([y--, x--]);
+        //     moves.forEach(move => {
+        //         if (board.isMoveValid(move)) {
+        //             smartMoves.push(move);
+        //         }
+        //     })
+        // }
 
           // computer AI logic;
         if (computer) {
@@ -203,11 +230,11 @@ const Player = (name, computer=false) => {
                 
             // } else {
                 // store a random move in x;
-                let x = randomCoords();
+                let x = board.getRandomCoords();
 
                 // if 'random' move has already been made, create another pair of randoms coords
                 while(board[x[0]][x[1]] === 'X' || board[x[0]][x[1]] === 'M') {
-                    x = randomCoords();
+                    x = board.getRandomCoords();
                 }
 
                 return x;
@@ -227,7 +254,6 @@ const Player = (name, computer=false) => {
 
     }
 }
-
 
 module.exports = {
     ships,
