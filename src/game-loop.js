@@ -2,26 +2,33 @@ const index = require('./index');
 import * as domStuff from './dom-stuff'
 
 
-const newGame = () => {
+const gameLoop = () => {
 
       // setup
     let playerOne = index.Player('Player One');
-    let computer = index.Player('Computer', true);
-    let playerBoard = index.gameBoard();
-    let computerBoard = index.gameBoard();
-
-    //    // place ships automatically for now
-        let autoPlace = (board) => {
-            let autoCoord = [0, 0]
-            for (let ship in index.ships) {
-                board.placeShip(index.ships[ship], autoCoord)
-                autoCoord[0]++
-            }
-        }
-        autoPlace(playerBoard)
-        autoPlace(computerBoard);
-    // ----------------------------------------
+    let PC = index.Player('Computer', true);
+    let player = index.gameBoard();
+    let computer = index.gameBoard();
+    let playerBoard = player.board;
+    let computerBoard = computer.board;
     
+    
+
+      // auto random place ships for now;
+    player.randomlyPlaceShips();
+    computer.randomlyPlaceShips();
+
+    
+
+
+
+    domStuff.createGameBoard(playerBoard, 'Player 1 Board');
+    domStuff.createGameBoard(computerBoard, 'Computer Board');
+
+    console.log(playerBoard)
+
+    domStuff.highlightShips(playerBoard);
+    domStuff.getSquaresCoordinates('Computer-Board')
 
 
     let gameHasWinner = true;
@@ -33,61 +40,73 @@ const newGame = () => {
     
     
     
-    
+   
 
-      // logic for game loop ** switch gameHasWinner flag to adjust;
     while (!gameHasWinner) {
-        // player attack
-        let attack = Promise.resolve(playerOne.attack()) 
-            .then(coord => {
-                  // remove spaces and commas
-                coord = coord.split(' ').join('').split(',');
-                  // turn strings into nums
-                coord.forEach(element => {
-                    coord[coord.indexOf(element)] = parseInt(element)
-                });
-                return coord;
-            })
-        .then(coord => {
-            computerBoard.receiveAttack(coord);
-            if (computerBoard.allShipsSunk()) gameHasWinner = true;
-        })
-         
-        // check if winner;
+    // player attack
 
-        // comp attack;
+    if (playerOneTurn) {
+        try {
+            let attack = playerOne.attack()
+        } catch (e) {
+            console.log(e)
+        }
+        
 
-        // check if winner;
-        gameHasWinner = true;
+        // .then(coord => {
+        //       // remove spaces and commas
+        //     coord = coord.split(' ').join('').split(',');
+        //       // turn strings into numbers
+        //     coord.forEach(element => {
+        //         coord[coord.indexOf(element)] = parseInt(element)
+        //     });
+        //     return coord;
+        // })
+        // .then(coord => {
+        //     computer.receiveAttack(coord);
+        //     if (computer.allShipsSunk()) gameHasWinner = true;
+        // })
+    }
+
+        
+    // check if winner;
+
+    // comp attack;
+
+    // check if winner;
+    gameHasWinner = true;
 
     }
+    
+
+
+      // logic for game loop ** switch gameHasWinner flag to adjust;
+    
 
     
     
 
     return {
-        get playerBoard() {
-            return playerBoard
+        get player() {
+            return player
         },
-        get computerBoard() {
-            return computerBoard
-        }
+        get computer() {
+            return computer
+        }, 
     }
 
 }
 
+// auto call
+gameLoop();
 
 
-async function game() {
-    let gameOne = newGame();
-    await domStuff;
-    domStuff.createGameBoard(gameOne.computerBoard.board)
+// async function game() {
+//     let gameOne = newGame();
+//     await domStuff;
+//     domStuff.createGameBoard(gameOne.computerBoard)
 
-}
+// }
 
-game()
+// game()
 
-
-export {
-    newGame
-}
