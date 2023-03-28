@@ -1,113 +1,54 @@
 const index = require('./index');
 import * as domStuff from './dom-stuff'
 
+let loop;
+let fps = 30;
 
+window.onload = function() {
+    setup()
+    console.log('loaded');
+    loop = setInterval(() => {
+        update();
+        render();
+    }, 1000/fps);
+}
 
+const update = () => {
 
+}
 
+const render = () => {
 
+}
 
+// setup
 
+async function setup () {
+    let playerOne = index.Player('Player-One');
+    let computer = index.Player('Computer', true);
+    let playerGame = index.gameBoard();
+    let computerGame = index.gameBoard();
+    let playerBoard = playerGame.board;
+    let computerBoard = computerGame.board;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const vsComputer = () => {
-
-//       // setup
-//     let playerOne = index.Player('Player-One');
-//     let PC = index.Player('Computer', true);
-//     let player = index.gameBoard();
-//     let computer = index.gameBoard();
-//     let playerBoard = player.board;
-//     let computerBoard = computer.board;
+    await domStuff;
     
+
+        // auto place ships for now
+        playerGame.randomlyPlaceShips();
+        computerGame.randomlyPlaceShips();
+
+    let firstGrid = document.querySelector('.first-grid');
+    domStuff.createBoard(firstGrid, playerBoard)
     
-//       // auto random place ships for now;
-//     player.randomlyPlaceShips();
-//     computer.randomlyPlaceShips();
+    let secondGrid = document.querySelector('.second-grid');
+    domStuff.createBoard(secondGrid, computerBoard)
 
-//       // display boards
-//     domStuff.createGameBoard(playerBoard, 'Player-One');
-//     domStuff.createGameBoard(computerBoard, 'Computer');
+    let playerCells = document.querySelectorAll('.first-grid .cell')
+    domStuff.renderShips(playerCells, playerBoard)
 
-//     console.log(
-//         player, 
-//         computer
-//         )
-
-//       // highlight ships
-//     domStuff.highlightShips(playerBoard, 'Player-One');
-
-//       // add event listeners to computer board for attacking;
-//     domStuff.addAttackListener('Computer', playerOne)
-
-
-//     let playerOneTurn = true;
-//     let gameHasWinner = false;
-//     let gameWinner = null;
-
-//     if (player.allShipsSunk() || computer.allShipsSunk()) {
-//         //
-//         gameHasWinner = true;
-//     } 
-
-//     return {
-//         gameHasWinner,
-//         playerOneTurn
-//     }
-// }
-
-// // temporary auto call
-// vsComputer();
-
-// const gameLoop = () => {
-
-
-//     if (!vsComputer.gameHasWinner) {
-            
-//         // player attack
-//         if (vsComputer.playerOneTurn) {
-//             console.log('hello')
-
-
-//         } else if (!playerOneTurn) {
-
-//             // computer attack
-//         }
-        
-
-
-
-//         gameHasWinner = true;
-
-//     }
-
-
-
-// }
-
+}
+    
 
 
 

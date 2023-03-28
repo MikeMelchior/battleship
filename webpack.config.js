@@ -6,8 +6,9 @@ module.exports = {
     mode: 'development',
     entry: {
         index: './src/index.js',
-        dom: './src/dom-stuff.js',
         game: './src/game-loop.js',
+        dom: './src/dom-stuff.js',
+        html: './src/index.html',
     },
     devServer: {
         static: './dist',
@@ -18,11 +19,16 @@ module.exports = {
             test: /\.css$/i,
             use: ['style-loader', 'css-loader'],
           },
+          {
+            test: /\.html$/i,
+            loader: "html-loader",
+          },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin ({
             title: 'Battleship',
+            template: './src/index.html',
         }),
     ],
     devtool: 'inline-source-map',
