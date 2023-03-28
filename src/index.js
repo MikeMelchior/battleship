@@ -128,10 +128,13 @@ const gameBoard = (length=10) => {
 
     let receiveAttack = (coord) => {
         let cell = board[parseInt(coord[0])][parseInt(coord[1])];
+
+        console.log('Attacking:', coord, '--->', cell)
           // if board cell is empty add M for miss, if not empty,
           // target game piece in gamePieces array using board cell 
           // hit the corresponding ship and add X to board;
-        if (cell === '') board[coord[0]][coord[1]] = 'M';  // M for miss
+        if (cell === '') return board[coord[0]][coord[1]] = 'M';  // M for miss
+        
         if (cell !== '') {
             gamePieces[cell].hit();
             board[coord[0]][coord[1]] = 'X';
@@ -157,14 +160,14 @@ const gameBoard = (length=10) => {
         return false;
     } 
 
-      // 0 - n random number generator
     let rng = (n) => {
         return Math.floor(Math.random() * n)
     }
-      // use rng to create random coords
+    // use rng to create random coords
     let getRandomCoords = () => {
         return [rng(10), rng(10)]
     }
+     
 
     return { 
         get board() {
@@ -175,78 +178,116 @@ const gameBoard = (length=10) => {
         receiveAttack,
         allShipsSunk,
         isMoveValid,
-        getRandomCoords,
         randomlyPlaceShips
     }
 }
 
-const Player = (name, computer=false) => {
+const Player = (name, computer=false, playersTurn=false) => {
 
-    let  attack = (coord, targetEnemy) => {
-          // hit flag used to determine if smart move should be made;
-        let hit = false; 
+    let isPlayersTurn = playersTurn;
+
+      // store array of already played moves for 
+      // computer to not make duplicate move;
+    let movesMade = [];
+      // store array of 'smart' moves if computer gets a hit
+    let smartMoves = [];
+
+    let storeSmartMoves = (coordinate) => {
+
+        let y = coordinate[0];
+        let x = coordinate[1];
+
+        let possibleMoves = [
+            [y+1, x],
+            [y-1, x],
+            [y, x+1], 
+            [y, x-1],
+        ]
+        for (let move of possibleMoves) {
+            if (move[0] >= 0 && move[0] < 10
+                && move[1] >= 0 && move[1] < 10
+                && !moveAlreadyMade(move)
+                && !smartMoveExists(move)) {
+                smartMoves.push(move);        
+            }
+        }
+    }
+      // 0 - n random number generator
+    let rng = (n) => {
+        return Math.floor(Math.random() * n)
+    }
+      // use rng to create random coords
+    let getRandomCoords = () => {
+        return [rng(10), rng(10)]
+    }
+
+    let wasHit = (coord, board) => {
+        if (board[coord[0]][coord[1]] === 'X') return true;
+        return false;
+    }
+
+    let smartMoveExists = (coord) => {
+        for (let move of smartMoves) {
+            if (JSON.stringify(coord) == JSON.stringify(move)) return true;
+        }
+        return false
+    }
+
+    let moveAlreadyMade = (coord) => {
+        for (let move of movesMade) {
+            if (JSON.stringify(coord) == JSON.stringify(move)) return true
+        }
+        return false;
+    }
+
+
+    let attack = (coord, targetEnemy) => {
 
         if (!computer) {
-            console.log('attacking at: ', coord)
-            // logic for player attack;
             targetEnemy.receiveAttack(coord);
-        } 
+        } else {
+              // if smart moves exist, use one, if not, get random coordinate
+            if (smartMoves.length > 0) {
+                let randomSmartMove = rng(smartMoves.length);
+                let smartMove = smartMoves[randomSmartMove]
+                smartMoves.splice(randomSmartMove, 1);
+                targetEnemy.receiveAttack(smartMove);
 
-        //   // store array of 'smart' moves if computer gets a hit
-        // let smartMoves = [];
-        
-        // // on a hit, push all adjacent unplayed coordinates into smartMoves Arr;
-        // let storeSmartMoves = (hitCoord) => {
-        //     let moves = [];
-        //     let y = hitCoord[0];
-        //     let x = hitCoord[1];
-        //     moves.push([y++, x++]);
-        //     moves.push([y++, x--]);
-        //     moves.push([y--, x++]);
-        //     moves.push([y--, x--]);
-        //     moves.forEach(move => {
-        //         if (board.isMoveValid(move)) {
-        //             smartMoves.push(move);
-        //         }
-        //     })
-        // }
+                // if move was hit store smartmoves
+                if (wasHit(smartMove, targetEnemy.board)) {
+                    storeSmartMoves(smartMove, targetEnemy.board)
+                }
+                movesMade.push(smartMove);
+            } else {
+                console.log('random move')
+                let randomCoord = getRandomCoords();
+                // if 'random' move has already been made, 
+                // create another pair of randoms coords 
+                // until move hasn't been made
+                while (moveAlreadyMade(randomCoord)) {
+                    randomCoord = getRandomCoords(); 
+                }
+                targetEnemy.receiveAttack(randomCoord);
+                movesMade.push(randomCoord);
+                // if move was hit store smartMoves
+                if (wasHit(randomCoord, targetEnemy.board)) {
+                    storeSmartMoves(randomCoord, targetEnemy.board)
+                }
+            }
+        }
+        console.log(smartMoves)
 
-          // computer AI logic;
-        if (computer) {
-            
-
-            //   // if smart moves exist, use them, if not, get random coordinate
-            // if (smartMoves.length > 0) {
-            //     let randomSmartMove = Math.floor(Math.random() * smartMoves.length);
-            //     let smartMove = smartMoves.splice(randomSmartMove, 1);
-                
-            //     return smartMove;
-                
-
-                
-            // } else {
-                // store a random move in x;
-                // let x = board.getRandomCoords();
-
-                // // if 'random' move has already been made, create another pair of randoms coords
-                // while(board[x[0]][x[1]] === 'X' || board[x[0]][x[1]] === 'M') {
-                //     x = board.getRandomCoords();
-                // }
-
-                // return x;
-                
-            //     // if the move is a hit store smart moves;
-            //     if (board[x[0]][x[1]] !== '') {
-            //         hit = true;
-            //         storeSmartMoves(x);
-            //     }
-            // }
-        } 
     }
 
     return {
         name, 
         attack,
+        get isPlayersTurn() {
+            return isPlayersTurn;
+        },
+        set isPlayersTurn(val) {
+            return isPlayersTurn = val;
+        }
 
     }
 }
