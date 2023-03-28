@@ -183,17 +183,16 @@ const gameBoard = (length=10) => {
     }
 }
 
-
-
 const Player = (name, computer=false) => {
 
-    async function attack (board, coord) {
+    let  attack = (coord) => {
           // hit flag used to determine if smart move should be made;
         let hit = false; 
 
         if (!computer) {
+            console.log('attacked')
             // logic for player attack;
-            return coord 
+            return coord;
         } 
 
         //   // store array of 'smart' moves if computer gets a hit
@@ -230,14 +229,14 @@ const Player = (name, computer=false) => {
                 
             // } else {
                 // store a random move in x;
-                let x = board.getRandomCoords();
+                // let x = board.getRandomCoords();
 
-                // if 'random' move has already been made, create another pair of randoms coords
-                while(board[x[0]][x[1]] === 'X' || board[x[0]][x[1]] === 'M') {
-                    x = board.getRandomCoords();
-                }
+                // // if 'random' move has already been made, create another pair of randoms coords
+                // while(board[x[0]][x[1]] === 'X' || board[x[0]][x[1]] === 'M') {
+                //     x = board.getRandomCoords();
+                // }
 
-                return x;
+                // return x;
                 
             //     // if the move is a hit store smart moves;
             //     if (board[x[0]][x[1]] !== '') {
