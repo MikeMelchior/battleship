@@ -127,13 +127,14 @@ const gameBoard = (length=10) => {
     }
 
     let receiveAttack = (coord) => {
-        let cell = board[coord[0]][coord[1]];
-          // check board at argument coord and return corresponding value;
-        if (cell === '') return 'M';  // M for miss
+        let cell = board[parseInt(coord[0])][parseInt(coord[1])];
+          // if board cell is empty add M for miss, if not empty,
+          // target game piece in gamePieces array using board cell 
+          // hit the corresponding ship and add X to board;
+        if (cell === '') board[coord[0]][coord[1]] = 'M';  // M for miss
         if (cell !== '') {
             gamePieces[cell].hit();
             board[coord[0]][coord[1]] = 'X';
-            return 'X'  // X for hit
         }
     }
 
@@ -154,11 +155,7 @@ const gameBoard = (length=10) => {
             && coord[0] >= 0
             && coord[1] >= 0) return true;
         return false;
-    }
-
-
-
-    
+    } 
 
       // 0 - n random number generator
     let rng = (n) => {
@@ -185,14 +182,14 @@ const gameBoard = (length=10) => {
 
 const Player = (name, computer=false) => {
 
-    let  attack = (coord) => {
+    let  attack = (coord, targetEnemy) => {
           // hit flag used to determine if smart move should be made;
         let hit = false; 
 
         if (!computer) {
-            console.log('attacked')
+            console.log('attacking at: ', coord)
             // logic for player attack;
-            return coord;
+            targetEnemy.receiveAttack(coord);
         } 
 
         //   // store array of 'smart' moves if computer gets a hit
