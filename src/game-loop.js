@@ -5,37 +5,18 @@ let loop;
 let fps = 30;
 
 window.onload = function() {
-    setup()
-    console.log('loaded');
-    loop = setInterval(() => {
-        update();
-        render();
-    }, 1000/fps);
-}
-
-const update = () => {
-
-}
-
-const render = () => {
-
-}
-
-// setup
-
-async function setup () {
     let playerOne = index.Player('Player-One');
     let computer = index.Player('Computer', true);
-    let playerGame = index.gameBoard();
+    let playerOneGame = index.gameBoard();
     let computerGame = index.gameBoard();
-    let playerBoard = playerGame.board;
+    let playerBoard = playerOneGame.board;
     let computerBoard = computerGame.board;
+    let playerOneTurn = true;
 
-    await domStuff;
     
 
         // auto place ships for now
-        playerGame.randomlyPlaceShips();
+        playerOneGame.randomlyPlaceShips();
         computerGame.randomlyPlaceShips();
 
     let firstGrid = document.querySelector('.first-grid');
@@ -47,7 +28,69 @@ async function setup () {
     let playerCells = document.querySelectorAll('.first-grid .cell')
     domStuff.renderShips(playerCells, playerBoard)
 
+    //temp test
+    let targetCells = document.querySelectorAll('.second-grid .cell');
+    domStuff.attackListeners(targetCells, playerOne, computerGame);
+
+    console.log(computerBoard)
+
+    // setup()
+    console.log('loaded');
+    loop = setInterval(() => {
+        update();
+        render();
+    }, 1000);
 }
+
+const update = () => {
+    let firstGrid = document.querySelector('.first-grid');
+    let secondGrid = document.querySelector('.second-grid');
+    let playerCells = document.querySelectorAll('.first-grid .cell');
+    let targetCells = document.querySelectorAll('.second-grid .cell');
+
+    // console.log(setup.computerBoard)
+    // domStuff.updateBoard(targetCells, setup.computerBoard)
+}
+
+const render = () => {
+
+}
+
+// setup
+
+// function setup () {
+    
+
+
+//     return {
+//         playerOne,
+//         computer, 
+//         playerOneGame, 
+//         computerGame, 
+//         playerBoard, 
+//         computerBoard,
+
+//         // get playerOne() {
+//         //     return playerOne
+//         // },
+//         // get computer() {
+//         //     return computer
+//         // },
+//         // get playerOneGame() {
+//         //     return playerOneGame;
+//         // },
+//         // get computerGame() {
+//         //     return computerGame;
+//         // },
+//         // get playerBoard() {
+//         //     return playerBoard;
+//         // },
+//         // get computerBoard() {
+//         //     return computerBoard;
+//         // },
+//     }
+
+// }
     
 
 
