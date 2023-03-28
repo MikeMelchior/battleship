@@ -31,13 +31,39 @@ const createBoard = (targetElement, board) => {
 const renderShips = (nodeList, board) => {
     
     nodeList.forEach(cell => {
-        let coordY = cell.getAttribute('coordinates')[0]
-        let coordX = cell.getAttribute('coordinates')[2]
+        let coordY = cell.getAttribute('coordinates')[0];
+        let coordX = cell.getAttribute('coordinates')[2];
         if (board[coordY][coordX] !== '') {
-            cell.style.backgroundColor = '#073B3A'
+            cell.style.backgroundColor = '#073B3A';
         }
     });
 }   
+
+const updateBoard = (nodeList, board) => {
+    nodeList.forEach(cell => {
+        let coordY = cell.getAttribute('coordinates')[0];
+        let coordX = cell.getAttribute('coordinates')[2];
+        if (board[coordY][coordX] === 'X') {
+            node.syle.backgroundColor = 'red';
+        } else if (board[coordY][coordX] === 'M') {
+            node.style.backgroundColor = 'cyan'
+        }
+    })
+}
+
+const attackListeners = (nodeList, player, target) => {
+    nodeList.forEach( (cell) => {
+        cell.addEventListener('click', (e) =>{
+            let coordY = cell.getAttribute('coordinates')[0];
+            let coordX = cell.getAttribute('coordinates')[2];
+            let coord = [coordY, coordX]
+            player.attack(coord, target);
+            console.log(target)
+        })
+    })
+} 
+
+
 
 
 
@@ -46,6 +72,8 @@ const renderShips = (nodeList, board) => {
 export {
     createBoard,
     renderShips,
+    updateBoard,
+    attackListeners,
 
 
 }
