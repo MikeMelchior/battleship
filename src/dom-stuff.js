@@ -4,6 +4,25 @@ import './styles.css'
 const index = require('./index')
 const gameLoop = require('./game-loop')
 
+const createInputGrid = () => {
+    let grid = document.querySelector('.input-grid');
+    let rowNum = 0;
+    for (let i = 0; i < 9; i++) {
+        let row = document.createElement('div');
+        let cellNum = 0;
+        for (let j = 0; j < 9; j++) {
+            let cell = document.createElement('div');
+            cell.setAttribute('coordinates', `${rowNum}, ${cellNum}`)
+            row.append(cell) 
+            cellNum++;
+        }
+        rowNum++;
+        grid.append(row)
+    }   
+}
+
+createInputGrid();
+
 
 const createBoard = (targetElement, board) => {
     let element = document.createElement('div');
@@ -60,7 +79,6 @@ const attackListener = (cell, player, target) => {
     let coord = [coordY, coordX]
     player.attack(coord, target);
     player.isPlayersTurn = false;
-
 }
 
 const addListeners = (nodeList, player, target) => {

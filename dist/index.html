@@ -8,12 +8,7 @@
     <title>Document</title>
 <script defer src="runtime.bundle.js"></script><script defer src="index.bundle.js"></script><script defer src="game.bundle.js"></script><script defer src="dom.bundle.js"></script><script defer src="html.bundle.js"></script></head>
 <body>
-    <div class="opening-window hidden">
-        <div class="grid"></div>
-        <button class="rotate"></button>
-        <button class="reset"></button>
-        <button class="start"></button>
-    </div>
+    
     <header class="header">
         <p class="title">Battleship</p>
     </header>
@@ -28,5 +23,20 @@
     <footer class="footer">
         <p class="tag"><a href="https://github.com/rubberteeth/battleship" target="#blank">repo</a></p>
     </footer>
+    <div class="opening-window">
+        <div class="input-grid"></div>
+        <div class="buttons">
+            <button class="rotate"></button>
+            <button class="reset"></button>
+            <button class="start"></button>
+        </div>
+        
+    </div>
+    <div class="hidden game-win-screen">
+        <div class="text-container">
+            <p class="win-text"></p>
+        </div> 
+    </div> 
+
 </body>
 </html>

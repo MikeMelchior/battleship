@@ -1,7 +1,7 @@
 const index = require('./index');
 import * as domStuff from './dom-stuff'
 
-let checkStatus;
+let loop;
 
 const newGame = () => {
     let playerOne = index.Player('Player-One', false, true);
@@ -37,16 +37,25 @@ const newGame = () => {
     let targetCells = document.querySelectorAll('.second-grid .cell');
     domStuff.addListeners(targetCells, playerOne, computerGame);
 
-    checkStatus = setInterval(() => {
+      //set up interval to check if computers turn and make move if it is
+    loop = setInterval(() => {
         if (!playerOne.isPlayersTurn) {
             computer.attack(null, playerOneGame)
             domStuff.updateBoard(playerCells, playerBoard)
             playerOne.isPlayersTurn = true;
         }
-    }, 1300)
+          // if computer won game :
+        if (playerOneGame.allShipsSunk()) {
+            clearInterval(loop)
+        } 
+    }, 1000)
+
+
 
     
 }
+
+
 
 window.onload = newGame();
 
