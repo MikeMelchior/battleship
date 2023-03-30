@@ -36,19 +36,13 @@ body {
 .opening-window {
     position: absolute;
     width: 100%;
-    height: 100%;
-    background-color: var(--dartmouthGreen);
+    height: fit-content;
+    min-height: 100%;
+    background-color: var(--ecru); 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.input-grid {
-    width: 350px;
-    height: 350px;
-    border: 1px solid;
-
 }
 
 .opening-window.hidden{
@@ -58,20 +52,57 @@ body {
     visibility: hidden;
 }
 
-.game-info {
-    width: 100%;
-    height: 50px;
+.input-grid {
+    
     border: 1px solid;
-    margin: 10px 0;
-    /* padding: ; */ 
-    display: flex;
-    justify-content: space-evenly;
-    align-content: center;
+    background-color: whitesmoke;
+    display: grid;
+    grid: repeat(10, 35px) / repeat(10, 35px);
+}
+
+.input-grid .cell {
+    border: 1px solid;
+}
+
+.opening-window p {
+    font-size: 30px;
+    /* padding-bottom: 20px; */
+}
+
+.opening-window .buttons {
+    width: 350px;
+    padding: 10px;
+    display: grid;
+    grid: 1fr / 1fr;
+    place-items: center;
+}
+
+.opening-window button {
+    width: 90px;
+    height: 40px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.opening-window button:hover {
+    opacity: 0.8;
+}
+
+.game-info {
+    width: 80%;
+    height: 50px;
+    margin: 60px auto 30px auto;
     flex-wrap: wrap;
     gap: 100px;
 }
+
+.game-info p {
+    text-align: center;
+    font-size: 26px;
+}
 .main {
     height: fit-content;
+    flex: 1;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -86,17 +117,17 @@ body {
 }
 
 .grid {
-    width: 350px;
-    height: 350px;
+    width: fit-content;
+    height: fit-content;
     margin: auto;
     padding: 2px;
     display: grid;
-    grid: repeat(1fr, 10)/ 1fr;
+    grid: repeat(10, 35px)/ 1fr;
 }
 
 .grid > div {
     display: grid;
-    grid: 1fr / repeat(10, 1fr);
+    grid: 1fr / repeat(10, 35px);
 }
 
 .grid, 
@@ -112,7 +143,8 @@ body {
     font-size: 9px;
 }
 
-.second-grid .cell:hover {
+.second-grid .cell:hover,
+.input-grid .cell:hover {
     background-color: var(--ecru);
 }
 

@@ -4,24 +4,43 @@ import './styles.css'
 const index = require('./index')
 const gameLoop = require('./game-loop')
 
+
+
 const createInputGrid = () => {
     let grid = document.querySelector('.input-grid');
     let rowNum = 0;
-    for (let i = 0; i < 9; i++) {
-        let row = document.createElement('div');
+    for (let i = 0; i <= 9; i++) {
         let cellNum = 0;
-        for (let j = 0; j < 9; j++) {
+        for (let j = 0; j <= 9; j++) {
             let cell = document.createElement('div');
-            cell.setAttribute('coordinates', `${rowNum}, ${cellNum}`)
-            row.append(cell) 
+            cell.className = 'cell';
+            cell.setAttribute('coordinates', `${rowNum},${cellNum}`);
+            grid.append(cell);
             cellNum++;
         }
         rowNum++;
-        grid.append(row)
     }   
 }
 
 createInputGrid();
+
+let inputNodeList = document.querySelectorAll('.input-grid .cell')
+    // create temporary game and use it to 
+    // store the info of the placed ships,
+let tempGame = index.gameBoard();   
+setTimeout(() => {
+    tempGame.randomlyPlaceShips()
+    renderShips(inputNodeList, tempGame.board)
+}, 1);
+
+
+// randomize ship placement button event listener
+document.querySelector('.random').addEventListener('click', () => {
+    // clear board in case it already exists;
+    tempGame.clearBoard();
+    tempGame.randomlyPlaceShips();
+    renderShips(inputNodeList, tempGame.board)
+})  
 
 
 const createBoard = (targetElement, board) => {
@@ -54,6 +73,8 @@ const renderShips = (nodeList, board) => {
         let coordX = cell.getAttribute('coordinates')[2];
         if (board[coordY][coordX] !== '') {
             cell.style.backgroundColor = '#073B3A';
+        }else {
+            cell.style.backgroundColor = '#FDF0D5'
         }
     });
 }   
@@ -90,6 +111,11 @@ const addListeners = (nodeList, player, target) => {
     })
 } 
 
+document.querySelector('.start').addEventListener('click', () => {
+    document.querySelector('.opening-window').classList.add('hidden')
+    gameLoop.default();
+})
+
 
 
 
@@ -98,6 +124,7 @@ export {
     renderShips,
     updateBoard,
     addListeners,
+    tempGame
 }
 
 

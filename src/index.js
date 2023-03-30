@@ -50,6 +50,10 @@ const shipFactory = (name, size) => {
 
 const gameBoard = (length=10) => {
 
+    // board will consist of following markers: 
+    // '' For empty square; // M for missed square;
+    // X for hit // index of gamePieces array for ship
+
     let createBoard = () => {
         let board = [];
         for (let i = 0; i < length; i++) {
@@ -62,13 +66,13 @@ const gameBoard = (length=10) => {
         return board;
     }
 
-    let board = createBoard(length);
-
-    // board will consist of following markers: 
-    // '' For empty square; // M for missed square;
-    // X for hit // index of gamePieces array for ship
-    
+    let board = createBoard();
     let gamePieces = [];
+
+    let clearBoard = () => {
+        board = createBoard()
+        gamePieces = [];
+    }
 
     let storeShip = (ship) => {
         let newShip = shipFactory(ship.name, ship.size)
@@ -173,7 +177,10 @@ const gameBoard = (length=10) => {
         get board() {
             return board;
         },
-        gamePieces,
+        clearBoard,
+        get gamePieces() {
+            return gamePieces;
+        },
         placeShip,
         receiveAttack,
         allShipsSunk,

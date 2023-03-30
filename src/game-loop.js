@@ -3,30 +3,34 @@ import * as domStuff from './dom-stuff'
 
 let loop;
 
-const newGame = () => {
+export default function newGame () {
     let playerOne = index.Player('Player-One', false, true);
+    let playerOneGame = domStuff.tempGame;
     let computer = index.Player('Computer', true);
-    let playerOneGame = index.gameBoard();
+    // let playerOneGame = index.gameBoard();
     let computerGame = index.gameBoard();
     let playerBoard = playerOneGame.board;
     let computerBoard = computerGame.board;
 
     
+    
 
-
-        // auto place ships for now
-        playerOneGame.randomlyPlaceShips();
-        computerGame.randomlyPlaceShips();
-
-
+    
+    computerGame.randomlyPlaceShips();
 
 
       // create player game board
     let firstGrid = document.querySelector('.first-grid');
+    firstGrid.childNodes.forEach(node => {
+        node.remove();
+    })
     domStuff.createBoard(firstGrid, playerBoard)
     
       // create computer game board
     let secondGrid = document.querySelector('.second-grid');
+    secondGrid.childNodes.forEach(node => {
+        node.remove();
+    })
     domStuff.createBoard(secondGrid, computerBoard)
 
       // render ships on player one
@@ -47,17 +51,21 @@ const newGame = () => {
           // if computer won game :
         if (playerOneGame.allShipsSunk()) {
             clearInterval(loop)
+            alert('Computer wins!')
         } 
-    }, 1000)
-
-
-
+        if (computerGame.allShipsSunk()) {
+            clearInterval(loop)
+            alert('Player wins!')
+        }
+    }, 800)
+    
+    
+    
     
 }
 
 
 
-window.onload = newGame();
 
 
 
