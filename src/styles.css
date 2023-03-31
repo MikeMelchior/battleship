@@ -90,7 +90,7 @@ body {
 
 .game-info {
     width: 80%;
-    height: 50px;
+    height: fit-content;
     margin: 60px auto 30px auto;
     flex-wrap: wrap;
     gap: 100px;
